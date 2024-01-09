@@ -4,6 +4,8 @@ export interface signupUserDto {
     email: string;
     phone_num: string;
     birthday: Date;
+    password: string;
+    salt: string;
 }
 export interface loginUserDto {
     email: string;
