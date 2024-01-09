@@ -5,6 +5,6 @@ import loginRouter from './users/login';
 const app = express();
 app.use(express.json());
 app.use('/signup', signupRouter);
-app.use('/signup', loginRouter);
+app.use('/login', loginRouter);
 
 export default app;
