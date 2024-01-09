@@ -5,6 +5,8 @@ export interface UserDoc extends Document {
     email: string;
     phone_num: string;
     birthday: Date;
+    password: string;
+    salt: string;
 }
 export const User = mongoose.model<UserDoc>(
     'Users',
@@ -38,6 +40,15 @@ export const User = mongoose.model<UserDoc>(
             },
             birthday: {
                 type: Date,
+                required: true,
+            },
+            password: {
+                type: String,
+                required: true,
+                minlength: 8,
+            },
+            salt: {
+                type: String,
                 required: true,
             },
         },
