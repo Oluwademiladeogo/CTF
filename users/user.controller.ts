@@ -1,4 +1,4 @@
-import * as jwt from 'jsonwebtoken-esm';
+import * as jwt from 'jsonwebtoken';
 import { User } from '../models/users';
 import { loginUserDto, signupUserDto } from './user.dto';
 import bcrypt from 'bcrypt';
