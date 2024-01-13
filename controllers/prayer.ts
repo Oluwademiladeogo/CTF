@@ -4,49 +4,45 @@ import { PrayerDoc } from '../types';
 import { validatePrayer, validatePrayerUpdate } from '../validators/prayer';
 import mongoose from 'mongoose';
 
-
-export const createPrayer = async (req: Request, res: Response): Promise<void> => {
+export const createPrayer = async (req: Request, res: Response): Promise<Response> => {
     const { title, url, startDate, endDate, frequency } = req.body;
 
     const { error } = validatePrayer({ title, url, startDate, endDate, frequency });
 
     if (error) {
-      res.status(400).json({ success: false, error: error.details[0].message });
-      return;
+        return res.status(400).json({ success: false, details: error.details[0].message });
     }
 
     const newPrayer = new Prayer({
-      title,
-      url,
-      startDate,
-      endDate,
-      frequency,
+        title,
+        url,
+        startDate,
+        endDate,
+        frequency,
     });
 
     const savedPrayer = await newPrayer.save();
 
-    res.status(201).json({ success: true, prayer: savedPrayer });
+    return res.status(201).json({ success: true, prayer: savedPrayer });
 };
 
-
-export const getAllPrayers = async (_req: Request, res: Response): Promise<void> => {
+export const getAllPrayers = async (_req: Request, res: Response): Promise<Response> => {
     const prayers = await Prayer.find();
-    res.status(200).json({ success: true, prayers });
+    return res.status(200).json({ success: true, prayers });
 };
 
-export const getPrayerById = async (req: Request, res: Response): Promise<void> => {
+export const getPrayerById = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
 
-    if (!mongoose.isObjectIdOrHexString(id)) res.status(400).send({success: false, details: `${id} is not a valid ID`});
+    if (!mongoose.isObjectIdOrHexString(id)) return res.status(400).send({ success: false, details: `${id} is not a valid ID` });
 
     const prayer = await Prayer.findById(id);
 
     if (!prayer) {
-      res.status(404).json({ success: false, error: 'Prayer not found' });
-      return;
+        return res.status(404).json({ success: false, details: 'Prayer not found' });
     }
 
-    res.status(200).json({ success: true, prayer });
+    return res.status(200).json({ success: true, prayer });
 };
 
 export const updatePrayerById = async (req: Request, res: Response): Promise<Response> => {

@@ -5,14 +5,13 @@ import { validateCategory } from '../validators/category';
 import mongoose from 'mongoose';
 
 
-export const createCategory = async (req: Request, res: Response): Promise<void> => {
+export const createCategory = async (req: Request, res: Response): Promise<Response> => {
     const { name, imageUrl } = req.body;
 
     const { error } = validateCategory({ name, imageUrl });
 
     if (error) {
-      res.status(400).json({ success: false, error: error.details[0].message });
-      return;
+      return res.status(400).json({ success: false, details: error.details[0].message });
     }
 
     const newCategory = new Category({
@@ -22,7 +21,7 @@ export const createCategory = async (req: Request, res: Response): Promise<void>
 
     const savedCategory = await newCategory.save();
 
-    res.status(201).json({ success: true, category: savedCategory });
+    return res.status(201).json({ success: true, category: savedCategory });
 };
 
 
@@ -33,7 +32,7 @@ export const getAllCategories = async (_req: Request, res: Response): Promise<vo
 };
 
 
-export const getCategoryById = async (req: Request, res: Response): Promise<void> => {
+export const getCategoryById = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
 
     if (!mongoose.isObjectIdOrHexString(id)) res.status(400).send({success: false, details: `${id} is not a valid ID`});
@@ -41,15 +40,14 @@ export const getCategoryById = async (req: Request, res: Response): Promise<void
     const category = await Category.findById(id);
 
     if (!category) {
-      res.status(404).json({ success: false, error: 'Category not found' });
-      return;
+      return res.status(404).json({ success: false, details: 'Category not found' });
     }
 
-    res.status(200).json({ success: true, category });
+    return res.status(200).json({ success: true, category });
 };
 
 
-export const updateCategoryById = async (req: Request, res: Response): Promise<void> => {
+export const updateCategoryById = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
     
     if (!mongoose.isObjectIdOrHexString(id)) res.status(400).send({success: false, details: `${id} is not a valid ID`});
@@ -63,15 +61,14 @@ export const updateCategoryById = async (req: Request, res: Response): Promise<v
     );
 
     if (!updatedCategory) {
-      res.status(404).json({ success: false, error: 'Category not found' });
-      return;
+      return res.status(404).json({ success: false, details: 'Category not found' });
     }
 
-    res.status(200).json({ success: true, category: updatedCategory });
+    return res.status(200).json({ success: true, category: updatedCategory });
 };
 
 
-export const deleteCategoryById = async (req: Request, res: Response): Promise<void> => {
+export const deleteCategoryById = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
 
     if (!mongoose.isObjectIdOrHexString(id)) res.status(400).send({success: false, details: `${id} is not a valid ID`});
@@ -79,9 +76,8 @@ export const deleteCategoryById = async (req: Request, res: Response): Promise<v
     const deletedCategory = await Category.findByIdAndDelete(id);
 
     if (!deletedCategory) {
-      res.status(404).json({ success: false, error: 'Category not found' });
-      return;
+      return res.status(404).json({ success: false, details: 'Category not found' });
     }
 
-    res.status(200).json({ success: true, category: deletedCategory });
+    return res.status(200).json({ success: true, category: deletedCategory });
 };

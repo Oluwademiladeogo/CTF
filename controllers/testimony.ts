@@ -5,10 +5,10 @@ import { validateTestimony, validateUpdatedTestimony } from '../validators/testi
 import mongoose from 'mongoose';
 
 
-export const createTestimony = async (req: Request, res: Response): Promise<void> => {
+export const createTestimony = async (req: Request, res: Response): Promise<Response> => {
     const {error} = validateTestimony(req.body);
 
-    if (error) res.status(400).send({details: error.details[0].message})
+    if (error) return res.status(400).send({details: error.details[0].message})
 
     const { title, content, user, attachments }: TestimonyDto = req.body;
 
@@ -21,40 +21,39 @@ export const createTestimony = async (req: Request, res: Response): Promise<void
 
     const savedTestimony = await newTestimony.save();
 
-    res.status(201).json({ success: true, testimony: savedTestimony });
+    return res.status(201).json({ success: true, testimony: savedTestimony });
 };
 
 
 export const getAllTestimonies = async (_req: Request, res: Response): Promise<void> => {
-    const testimonies = await Testimony.find().populate('user').exec();
+    const testimonies = await Testimony.find().populate("user", "email firstname").exec();
 
     res.status(200).json({ success: true, testimonies });
 };
 
-export const getTestimonyById = async (req: Request, res: Response): Promise<void> => {
+export const getTestimonyById = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
 
-    if (!mongoose.isObjectIdOrHexString(id)) res.status(400).send({success: false, details: `${id} is not a valid ID`});
+    if (!mongoose.isObjectIdOrHexString(id)) return res.status(400).send({success: false, details: `${id} is not a valid ID`});
 
-    const testimony = await Testimony.findById(id).populate('user').exec();
+    const testimony = await Testimony.findById(id).populate("user", "email").exec();
 
     if (!testimony) {
-        res.status(404).json({ success: false, error: 'Testimony not found' });
-        return;
+        return res.status(404).json({ success: false, details: 'Testimony not found' });
     }
 
-    res.status(200).json({ success: true, testimony });
+    return res.status(200).json({ success: true, testimony });
 };
 
 
-export const updateTestimonyById = async (req: Request, res: Response): Promise<void> => {
+export const updateTestimonyById = async (req: Request, res: Response): Promise<Response> => {
   const { id } = req.params;
 
-  if (!mongoose.isObjectIdOrHexString(id)) res.status(400).send({success: false, details: `${id} is not a valid ID`});
+  if (!mongoose.isObjectIdOrHexString(id)) return res.status(400).send({success: false, details: `${id} is not a valid ID`});
 
   const {error} = validateUpdatedTestimony(req.body);
 
-  if (error) res.status(400).send({success: false, details: error.details[0].message});
+  if (error) return res.status(400).send({success: false, details: error.details[0].message});
 
   const { title, content, attachments }: Partial<TestimonyDto> = req.body;
 
@@ -62,27 +61,25 @@ export const updateTestimonyById = async (req: Request, res: Response): Promise<
       id,
       { title, content, attachments },
       { new: true }
-   ).populate('user').exec();
+   ).populate("user", "email").exec();
 
     if (!updatedTestimony) {
-        res.status(404).json({ success: false, error: 'Testimony not found' });
-        return;
+        return res.status(404).json({ success: false, details: 'Testimony not found' });
     }
 
-    res.status(200).json({ success: true, testimony: updatedTestimony });
+    return res.status(200).json({ success: true, testimony: updatedTestimony });
 };
 
-export const deleteTestimonyById = async (req: Request, res: Response): Promise<void> => {
+export const deleteTestimonyById = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
 
-    if (!mongoose.isObjectIdOrHexString(id)) res.status(400).send({success: false, details: `${id} is not a valid ID`});
+    if (!mongoose.isObjectIdOrHexString(id)) return res.status(400).send({success: false, details: `${id} is not a valid ID`});
 
-    const deletedTestimony = await Testimony.findByIdAndDelete(id).populate('user').exec();
+    const deletedTestimony = await Testimony.findByIdAndDelete(id).exec();
 
     if (!deletedTestimony) {
-      res.status(404).json({ success: false, error: 'Testimony not found' });
-      return;
+        return res.status(404).json({ success: false, details: 'Testimony not found' })
     }
 
-    res.status(200).json({ success: true, });
+    return res.status(200).json({ success: true, });
 };
