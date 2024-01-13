@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
-import { OtpDoc } from '../types';
+import { IOtpDoc } from '../types';
 
 
-export const otp = mongoose.model<OtpDoc>(
+export const otp = mongoose.model<IOtpDoc>(
     'otp',
 
-    new mongoose.Schema<OtpDoc>({
+    new mongoose.Schema<IOtpDoc>({
         email: {
             type: String,
             required: true,

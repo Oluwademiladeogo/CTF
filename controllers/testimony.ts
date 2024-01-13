@@ -10,12 +10,12 @@ export const createTestimony = async (req: Request, res: Response): Promise<Resp
 
     if (error) return res.status(400).send({details: error.details[0].message})
 
-    const { title, content, user, attachments }: TestimonyDto = req.body;
+    const { title, content, testifier, attachments }: TestimonyDto = req.body;
 
     const newTestimony = new Testimony({
         title,
         content,
-        user,
+        testifier,
         attachments,
     });
 
@@ -26,7 +26,7 @@ export const createTestimony = async (req: Request, res: Response): Promise<Resp
 
 
 export const getAllTestimonies = async (_req: Request, res: Response): Promise<void> => {
-    const testimonies = await Testimony.find().populate("user", "email firstname").exec();
+    const testimonies = await Testimony.find().populate("testifier", "email firstname").exec();
 
     res.status(200).json({ success: true, testimonies });
 };
@@ -36,7 +36,7 @@ export const getTestimonyById = async (req: Request, res: Response): Promise<Res
 
     if (!mongoose.isObjectIdOrHexString(id)) return res.status(400).send({success: false, details: `${id} is not a valid ID`});
 
-    const testimony = await Testimony.findById(id).populate("user", "email").exec();
+    const testimony = await Testimony.findById(id).populate("testifier", "email").exec();
 
     if (!testimony) {
         return res.status(404).json({ success: false, details: 'Testimony not found' });
@@ -61,7 +61,7 @@ export const updateTestimonyById = async (req: Request, res: Response): Promise<
       id,
       { title, content, attachments },
       { new: true }
-   ).populate("user", "email").exec();
+   ).populate("testifier", "email").exec();
 
     if (!updatedTestimony) {
         return res.status(404).json({ success: false, details: 'Testimony not found' });

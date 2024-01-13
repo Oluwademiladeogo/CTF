@@ -1,4 +1,5 @@
 import { Types } from 'mongoose';
+import { Request } from "express"
 
 export type JwtPayload = { 
     id: unknown
@@ -6,13 +7,13 @@ export type JwtPayload = {
     phone: string
 }
 
-export interface OtpDoc extends Document {
+export interface IOtpDoc extends Document {
     email: string;
     otp: string;
     createdAt: Date;
 }
 
-export interface UserDoc extends Document {
+export interface IUserDoc extends Document {
     first_name: string;
     last_name: string;
     email: string;
@@ -23,14 +24,14 @@ export interface UserDoc extends Document {
     role: string;
 }
 
-export interface TestimonyDoc extends Document {
+export interface ITestimonyDoc extends Document {
     title: string
     content: string
-    user: Types.ObjectId | UserDoc
+    testifier: Types.ObjectId | IUserDoc
     attachments?: string[]
 }
 
-export interface PrayerDoc extends Document {
+export interface IPrayerDoc extends Document {
     title: string
     url: string
     startDate: Date
@@ -41,27 +42,31 @@ export interface PrayerDoc extends Document {
     };
 }
 
-export interface CategoryDoc extends Document {
+export interface ICategoryDoc extends Document {
     name: string;
     imageUrl: string
 }
   
-export interface PostDoc extends Document {
+export interface IPostDoc extends Document {
     title: string;
     content: string;
-    author: Types.ObjectId | UserDoc;
-    categories: Types.ObjectId[] | CategoryDoc[];
+    author: Types.ObjectId | IUserDoc;
+    categories: Types.ObjectId[] | ICategoryDoc[];
 }
 
-export interface PartnerDoc extends Document {
+export interface IPartnerDoc extends Document {
     joinedAt: Date;
-    user: Types.ObjectId | UserDoc;
+    user: Types.ObjectId | IUserDoc;
 }
 
-export interface MentorDoc extends Document {
+export interface IMentorDoc extends Document {
     name: string;
     specialty: string;
-    user: Types.ObjectId | UserDoc;
+    user: Types.ObjectId | IUserDoc;
     joinedAt: Date;
-    mentees: Types.ObjectId[] | UserDoc[];
+    mentees: Types.ObjectId[] | IUserDoc[];
+}
+
+export interface ICustomRequest extends Request {
+    user?: JwtPayload
 }

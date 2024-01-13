@@ -1,7 +1,7 @@
 import mongoose, { Schema} from 'mongoose';
-import { PostDoc } from '../types';
+import { IPostDoc } from '../types';
 
-const postSchema = new Schema<PostDoc>(
+const postSchema = new Schema<IPostDoc>(
   {
     title: { type: String, required: true },
     content: { type: String, required: true },
@@ -15,6 +15,6 @@ const postSchema = new Schema<PostDoc>(
   { timestamps: true } 
 );
 
-const Post = mongoose.model<PostDoc>('Post', postSchema);
+const Post = mongoose.model<IPostDoc>('Post', postSchema);
 
 export default Post;

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import { CategoryDoc } from "../types";
+import { ICategoryDoc } from "../types";
 
-const categorySchema = new mongoose.Schema<CategoryDoc>({
+const categorySchema = new mongoose.Schema<ICategoryDoc>({
     name: { 
         type: String, 
         required: true, 
@@ -12,6 +12,6 @@ const categorySchema = new mongoose.Schema<CategoryDoc>({
     }
 });
 
-const Category = mongoose.model<CategoryDoc>('Category', categorySchema);
+const Category = mongoose.model<ICategoryDoc>('Category', categorySchema);
 
 export default Category;

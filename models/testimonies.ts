@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
-import { TestimonyDoc } from '../types';
+import { ITestimonyDoc } from '../types';
 import { Schema } from 'mongoose';
 
 
-const testimonySchema = new mongoose.Schema<TestimonyDoc>({
-    user: { 
+const testimonySchema = new mongoose.Schema<ITestimonyDoc>({
+    testifier: { 
         type: Schema.Types.ObjectId,
         ref: 'User', 
         required: true 
@@ -22,6 +22,6 @@ const testimonySchema = new mongoose.Schema<TestimonyDoc>({
 }, { timestamps: true },
 );
 
-const TestimonyModel = mongoose.model<TestimonyDoc>('Testimony', testimonySchema);
+const Testimony = mongoose.model<ITestimonyDoc>('Testimony', testimonySchema);
 
-export default TestimonyModel;
+export default Testimony;

@@ -4,7 +4,7 @@ import { TestimonyDto } from '../dto/testimony.dto';
 const testimonySchema = Joi.object({
   title: Joi.string().required(),
   content: Joi.string().max(1000),
-  user: Joi.string().required(),
+  testifier: Joi.string().required(),
   attachments: Joi.array().items(Joi.string()),
 });
 

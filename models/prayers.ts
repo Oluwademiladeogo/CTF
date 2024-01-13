@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-import { PrayerDoc } from '../types';
+import { IPrayerDoc } from '../types';
 
 
-const prayerSchema = new mongoose.Schema<PrayerDoc>({
+const prayerSchema = new mongoose.Schema<IPrayerDoc>({
     title: {
         type: String,
         required: true,
@@ -28,6 +28,6 @@ const prayerSchema = new mongoose.Schema<PrayerDoc>({
 }, { timestamps: true },
 );
 
-const Prayer = mongoose.model<PrayerDoc>('Prayer', prayerSchema);
+const Prayer = mongoose.model<IPrayerDoc>('Prayer', prayerSchema);
 
 export default Prayer;

@@ -1,15 +1,11 @@
 import {Request, Response, NextFunction} from "express";
 import * as jwt from "jsonwebtoken";
 import { config } from "dotenv";
-import { JwtPayload } from '../types';
+import { ICustomRequest, JwtPayload } from '../types';
 
 config();
 
-interface CustomRequest extends Request {
-    user?: string | JwtPayload;
-}
-
-const isAuthenticated = (req : CustomRequest, res: Response, next : NextFunction) => {
+const IsAuthenticated = (req : ICustomRequest, res: Response, next : NextFunction) => {
     const token = req.cookies["authToken"];
 
     if (!token)
@@ -31,4 +27,4 @@ const isAuthenticated = (req : CustomRequest, res: Response, next : NextFunction
     
 }
 
-export default isAuthenticated;
+export default IsAuthenticated;

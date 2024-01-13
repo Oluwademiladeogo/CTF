@@ -1,7 +1,7 @@
 import mongoose, { Schema} from 'mongoose';
-import { MentorDoc } from '../types';
+import { IMentorDoc } from '../types';
 
-const mentorSchema = new Schema<MentorDoc>({
+const mentorSchema = new Schema<IMentorDoc>({
     name: { 
         type: String, 
         required: true 
@@ -24,6 +24,6 @@ const mentorSchema = new Schema<MentorDoc>({
     { timestamps: true }
 );
 
-const Mentor = mongoose.model<MentorDoc>('Mentor', mentorSchema);
+const Mentor = mongoose.model<IMentorDoc>('Mentor', mentorSchema);
 
 export default Mentor;

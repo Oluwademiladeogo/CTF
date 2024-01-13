@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import Prayer from '../models/prayers';
-import { PrayerDoc } from '../types';
+import { IPrayerDoc } from '../types';
 import { validatePrayer, validatePrayerUpdate } from '../validators/prayer';
 import mongoose from 'mongoose';
 
@@ -50,14 +50,14 @@ export const updatePrayerById = async (req: Request, res: Response): Promise<Res
 
     if (!mongoose.isObjectIdOrHexString(id)) return res.status(400).send({success: false, details: `${id} is not a valid ID`});
 
-    const updateFields: Partial<PrayerDoc> = req.body;
+    const updateFields: Partial<IPrayerDoc> = req.body;
     const { error } = validatePrayerUpdate(updateFields);
 
     if (error) {
       return res.status(400).json({ success: false, error: error.details[0].message });
     }
 
-    const { title, url, startDate, endDate, frequency }: Partial<PrayerDoc> = req.body;
+    const { title, url, startDate, endDate, frequency }: Partial<IPrayerDoc> = req.body;
 
     const updatedPrayer = await Prayer.findByIdAndUpdate(
       id,

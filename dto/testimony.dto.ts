@@ -1,6 +1,6 @@
 export interface TestimonyDto {
     title: string
     content: string
-    user: string
+    testifier: string
     attachments?: string[]
 }
