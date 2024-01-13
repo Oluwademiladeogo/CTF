@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/', async (req: Request, res: Response) => {
     const { status, message } = await signupUser(req.body);
-    res.status(status).json({ message: message });
+    res.status(status).json({ message });
 });
 
 export default router;

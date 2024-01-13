@@ -1,6 +1,6 @@
 export interface PostDto {
     title: string;
     content: string;
-    author: number
+    author: string
     categories: String[];
 }

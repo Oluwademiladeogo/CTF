@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import Prayer from '../models/prayers';
 import { PrayerDoc } from '../types';
 import { validatePrayer, validatePrayerUpdate } from '../validators/prayer';
+import mongoose from 'mongoose';
 
 
 export const createPrayer = async (req: Request, res: Response): Promise<void> => {
@@ -36,6 +37,8 @@ export const getAllPrayers = async (_req: Request, res: Response): Promise<void>
 export const getPrayerById = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
 
+    if (!mongoose.isObjectIdOrHexString(id)) res.status(400).send({success: false, details: `${id} is not a valid ID`});
+
     const prayer = await Prayer.findById(id);
 
     if (!prayer) {
@@ -46,15 +49,16 @@ export const getPrayerById = async (req: Request, res: Response): Promise<void> 
     res.status(200).json({ success: true, prayer });
 };
 
-export const updatePrayerById = async (req: Request, res: Response): Promise<void> => {
+export const updatePrayerById = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
-    
+
+    if (!mongoose.isObjectIdOrHexString(id)) return res.status(400).send({success: false, details: `${id} is not a valid ID`});
+
     const updateFields: Partial<PrayerDoc> = req.body;
     const { error } = validatePrayerUpdate(updateFields);
 
     if (error) {
-        res.status(400).json({ success: false, error: error.details[0].message });
-        return;
+      return res.status(400).json({ success: false, error: error.details[0].message });
     }
 
     const { title, url, startDate, endDate, frequency }: Partial<PrayerDoc> = req.body;
@@ -66,23 +70,23 @@ export const updatePrayerById = async (req: Request, res: Response): Promise<voi
     );
 
     if (!updatedPrayer) {
-      res.status(404).json({ success: false, error: 'Prayer not found' });
-      return;
+      return res.status(404).json({ success: false, error: 'Prayer not found' });
     }
 
-    res.status(200).json({ success: true, prayer: updatedPrayer });
+    return res.status(200).json({ success: true, prayer: updatedPrayer });
 };
 
 
-export const deletePrayerById = async (req: Request, res: Response): Promise<void> => {
+export const deletePrayerById = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
+
+    if (!mongoose.isObjectIdOrHexString(id)) return res.status(400).send({success: false, details: `${id} is not a valid ID`});
 
     const deletedPrayer = await Prayer.findByIdAndDelete(id);
 
     if (!deletedPrayer) {
-      res.status(404).json({ success: false, error: 'Prayer not found' });
-      return;
+      return res.status(404).json({ success: false, error: 'Prayer not found' });
     }
 
-    res.status(200).json({ success: true });
+    return res.status(200).json({ success: true });
 };

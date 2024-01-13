@@ -1,3 +1,4 @@
+import "express-async-errors";
 import cors from "cors";
 import { Express } from "express";
 import testimony from "../Routes/testimony";
@@ -18,12 +19,12 @@ export default function (app: Express) {
         credentials: true,
       })
     ),
-    app.use("/testimonies", testimony);
-    app.use("/category", category);
-    app.use("/prayer", prayer);
-    app.use('/signup', signupRouter);
-    app.use('/login', loginRouter);
-    app.use('logout', logoutRouter);
+    app.use("/api/testimonies", testimony);
+    app.use("/api/category", category);
+    app.use("/api/prayer", prayer);
+    app.use('/api/signup', signupRouter);
+    app.use('/api/login', loginRouter);
+    app.use('/api/logout', logoutRouter);
     
     // Always leave this as the last handler
     app.use(errorHandler);

@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import Category from '../models/category';
 import { CategoryDoc } from '../types';
 import { validateCategory } from '../validators/category';
+import mongoose from 'mongoose';
 
 
 export const createCategory = async (req: Request, res: Response): Promise<void> => {
@@ -33,7 +34,9 @@ export const getAllCategories = async (_req: Request, res: Response): Promise<vo
 
 
 export const getCategoryById = async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params;
+    const { id } = req.params;
+
+    if (!mongoose.isObjectIdOrHexString(id)) res.status(400).send({success: false, details: `${id} is not a valid ID`});
 
     const category = await Category.findById(id);
 
@@ -48,6 +51,9 @@ export const getCategoryById = async (req: Request, res: Response): Promise<void
 
 export const updateCategoryById = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
+    
+    if (!mongoose.isObjectIdOrHexString(id)) res.status(400).send({success: false, details: `${id} is not a valid ID`});
+
     const { name, imageUrl }: Partial<CategoryDoc> = req.body;
 
     const updatedCategory = await Category.findByIdAndUpdate(
@@ -67,6 +73,9 @@ export const updateCategoryById = async (req: Request, res: Response): Promise<v
 
 export const deleteCategoryById = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
+
+    if (!mongoose.isObjectIdOrHexString(id)) res.status(400).send({success: false, details: `${id} is not a valid ID`});
+
     const deletedCategory = await Category.findByIdAndDelete(id);
 
     if (!deletedCategory) {

@@ -2,8 +2,8 @@ import Joi, { ValidationResult } from 'joi';
 import { signupUserDto } from "../dto/user.dto";
 
 const Schema = Joi.object({
-    firstname: Joi.string().min(3).required(),
-    lastname: Joi.string().min(3).required(),
+    first_name: Joi.string().min(3).required(),
+    last_name: Joi.string().min(3).required(),
     phone_num: Joi.number().min(10).required(),
     email: Joi.string().email().required(),
     birthday: Joi.date(),

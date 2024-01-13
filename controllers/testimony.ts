@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import Testimony from '../models/testimonies';
 import { TestimonyDto } from '../dto/testimony.dto';
 import { validateTestimony, validateUpdatedTestimony } from '../validators/testimony';
+import mongoose from 'mongoose';
 
 
 export const createTestimony = async (req: Request, res: Response): Promise<void> => {
@@ -33,6 +34,8 @@ export const getAllTestimonies = async (_req: Request, res: Response): Promise<v
 export const getTestimonyById = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
 
+    if (!mongoose.isObjectIdOrHexString(id)) res.status(400).send({success: false, details: `${id} is not a valid ID`});
+
     const testimony = await Testimony.findById(id).populate('user').exec();
 
     if (!testimony) {
@@ -46,6 +49,9 @@ export const getTestimonyById = async (req: Request, res: Response): Promise<voi
 
 export const updateTestimonyById = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
+
+  if (!mongoose.isObjectIdOrHexString(id)) res.status(400).send({success: false, details: `${id} is not a valid ID`});
+
   const {error} = validateUpdatedTestimony(req.body);
 
   if (error) res.status(400).send({success: false, details: error.details[0].message});
@@ -68,6 +74,8 @@ export const updateTestimonyById = async (req: Request, res: Response): Promise<
 
 export const deleteTestimonyById = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
+
+    if (!mongoose.isObjectIdOrHexString(id)) res.status(400).send({success: false, details: `${id} is not a valid ID`});
 
     const deletedTestimony = await Testimony.findByIdAndDelete(id).populate('user').exec();
 

@@ -9,10 +9,10 @@ import {
 
 const router = express.Router();
 
-router.post('/testimonies', createTestimony);
-router.get('/testimonies', getAllTestimonies);
-router.get('/testimonies/:id', getTestimonyById);
-router.put('/testimonies/:id', updateTestimonyById);
-router.delete('/testimonies/:id', deleteTestimonyById);
+router.post('/', createTestimony);
+router.get('/', getAllTestimonies);
+router.get('/:id', getTestimonyById);
+router.put('/:id', updateTestimonyById);
+router.delete('/:id', deleteTestimonyById);
 
 export default router;
