@@ -7,6 +7,7 @@ import category from "../Routes/category";
 import signupRouter from '../Routes/signup';
 import loginRouter from '../Routes/login';
 import logoutRouter from '../Routes/logout';
+import postRouter from '../Routes/post';
 import errorHandler from "../middlewares/error";
 
 export default function (app: Express) {
@@ -25,6 +26,7 @@ export default function (app: Express) {
     app.use('/api/signup', signupRouter);
     app.use('/api/login', loginRouter);
     app.use('/api/logout', logoutRouter);
+    app.use('/api/post', postRouter);
     
     // Always leave this as the last handler
     app.use(errorHandler);
