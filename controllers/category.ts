@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import Category from '../models/category';
-import { CategoryDoc } from '../types';
+import { ICategoryDoc } from '../types';
 import { validateCategory } from '../validators/category';
 import mongoose from 'mongoose';
 
@@ -52,7 +52,7 @@ export const updateCategoryById = async (req: Request, res: Response): Promise<R
     
     if (!mongoose.isObjectIdOrHexString(id)) res.status(400).send({success: false, details: `${id} is not a valid ID`});
 
-    const { name, imageUrl }: Partial<CategoryDoc> = req.body;
+    const { name, imageUrl }: Partial<ICategoryDoc> = req.body;
 
     const updatedCategory = await Category.findByIdAndUpdate(
       id,

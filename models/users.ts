@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
-import { UserDoc } from '../types';
+import { IUserDoc } from '../types';
 
-export const User = mongoose.model<UserDoc>(
+export const User = mongoose.model<IUserDoc>(
     'Users',
-    new mongoose.Schema<UserDoc>(
+    new mongoose.Schema<IUserDoc>(
         {
             first_name: {
                 type: String,
