@@ -1,13 +1,6 @@
 import mongoose from 'mongoose';
-export interface UserDoc extends Document {
-    first_name: string;
-    last_name: string;
-    email: string;
-    phone_num: string;
-    birthday: Date;
-    password: string;
-    salt: string;
-}
+import { UserDoc } from '../types';
+
 export const User = mongoose.model<UserDoc>(
     'Users',
     new mongoose.Schema<UserDoc>(

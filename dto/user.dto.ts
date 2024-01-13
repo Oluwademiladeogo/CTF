@@ -5,8 +5,9 @@ export interface signupUserDto {
     phone_num: string;
     birthday: Date;
     password: string;
-    salt: string;
+    repeat_password: string
 }
+
 export interface loginUserDto {
     email: string;
     password: string;

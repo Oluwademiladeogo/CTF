@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { UserDoc } from '../types';
+import { UserDoc } from '../types.js';
 
 export const User = mongoose.model<UserDoc>(
     'User',

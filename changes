@@ -1,0 +1,7 @@
+Moved interfaces to a separate "types" file
+Why are there two user models??
+Get endpoint for some user routes not needed
+In the verify otp what is happening(why updating the user email)?
+Removed salt option on signupuserdto
+WHy is a verify object passed into the User Model
+The name of the "Users" doc should be changed to User

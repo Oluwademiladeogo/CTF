@@ -1,8 +1,11 @@
 import express, { Request, Response } from 'express';
-import { verifyUserOtp } from '../utils/otp';
+import { signupUser } from '../controllers/signup';
+
 const router = express.Router();
+
 router.post('/', async (req: Request, res: Response) => {
-    const { email, pass } = req.body;
-    const { status, message } = await verifyUserOtp(email, pass);
+    const { status, message } = await signupUser(req.body);
     res.status(status).json({ message: message });
 });
+
+export default router;
