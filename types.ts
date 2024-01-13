@@ -1,4 +1,5 @@
 import { Types } from 'mongoose';
+import { Request } from "express"
 
 export type JwtPayload = { 
     id: unknown
@@ -26,7 +27,7 @@ export interface UserDoc extends Document {
 export interface TestimonyDoc extends Document {
     title: string
     content: string
-    user: Types.ObjectId | UserDoc
+    testifier: Types.ObjectId | UserDoc
     attachments?: string[]
 }
 
@@ -64,4 +65,8 @@ export interface MentorDoc extends Document {
     user: Types.ObjectId | UserDoc;
     joinedAt: Date;
     mentees: Types.ObjectId[] | UserDoc[];
+}
+
+export interface ICustomRequest extends Request {
+    user?: JwtPayload
 }

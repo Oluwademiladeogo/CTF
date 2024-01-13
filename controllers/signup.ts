@@ -46,7 +46,7 @@ export const signupUser = async (data: signupUserDto) => {
     await user.save();
 
     sendOtp(user.email);
-    const details = _.pick(user, ["email", "firstname", "last_name" ]);
+    const details = _.pick(user, ["email", "first_name", "last_name", "_id"]);
 
     return { status: 201, message: details };
     //after receiving this message, redirect to verifyUserOtp, to be done in test
